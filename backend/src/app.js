@@ -11,6 +11,8 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 const app = express();
 
 app.disable('x-powered-by');
+// Behind Render / Vercel proxies: use X-Forwarded-For for the client IP (rate limiting)
+if (nodeEnv === 'production') app.set('trust proxy', 1);
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },

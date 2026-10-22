@@ -433,6 +433,18 @@ The app deploys as **one web service** (Express serves both the API and the buil
 
 > On the free plan the service sleeps after about 15 minutes of inactivity, so the first request after that can take up to a minute.
 
+### Vercel (frontend + API as a serverless function) with a Neon PostgreSQL database
+
+`vercel.json` builds the React app, runs migrations and seed during the build, and serves the Express API from `api/index.js` as a serverless function.
+
+1. Import the GitHub repository in Vercel (**Add New → Project**). Keep the defaults, because `vercel.json` already defines the commands.
+2. Go to **Storage → Create Database → Neon (Postgres)** and connect it to the project. This adds `DATABASE_URL`.
+3. Under **Settings → Environment Variables**, add:
+   - `JWT_SECRET`: any long random string
+   - `DB_SSL`: `true`
+   - `NODE_ENV`: `production`
+4. **Redeploy**. The app runs at `https://<project>.vercel.app`.
+
 ### Any other Node host (Railway, a VPS, …)
 
 Set `NODE_ENV=production`, `DATABASE_URL` (plus `DB_SSL=true` if your provider needs it) and `JWT_SECRET`, then run:
